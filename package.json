@@ -9,7 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.37"
+    "ant-design-vue": "^3.2.10",
+    "pinia": "^2.0.16",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",
