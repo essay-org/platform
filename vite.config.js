@@ -11,15 +11,15 @@ export default defineConfig({
       replacement: resolve(__dirname, './src'),
     }],
   },
-  // server: {
-  //   host: '0.0.0.0',
-  //   port: 3031,
-  //   proxy: {
-  //     '/api': {
-  //       target: 'https://nest-api.buqiyuan.site/api/',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/api/, '')
-  //     }
-  //   }
-  // }
+  server: {
+    host: '0.0.0.0',
+    port: 3031,
+    proxy: {
+      '/api': {
+        target: 'https://nest-api.buqiyuan.site/api/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  }
 })
