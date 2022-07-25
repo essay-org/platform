@@ -1,9 +1,9 @@
 import { createRouter, createWebHashHistory, isNavigationFailure } from "vue-router";
 import { useUserStore } from '@/store/modules/user';
-import Nprogress from 'nprogress';
+import NProgress from 'nprogress';
 import Layout from "@/layout/index.vue";
 import Login from '@/views/login/index.vue';
-import Welcome from '@/views/dashboard/welcome';
+import Welcome from '@/views/dashboard/welcome/index.vue';
 
 // 无需登录验证的路由
 const whiteNameList = ['Login', 'error', 'error-404'];
@@ -12,7 +12,7 @@ const createRouterGuards = function(router) {
   router.beforeEach(async (to, from, next) => {
     NProgress.start()
     const userStore = useUserStore()
-    const token = 'this is token'
+    const token = window.localStorage.getItem('ACCESS_TOKEN')
     // 已经登录
     if(token) {
       const hasRoute = router.hasRoute(to.name)
@@ -43,7 +43,7 @@ const createRouterGuards = function(router) {
         next()
       } else {
         next({ name: 'Login', query: { redirect: to.fullPath }, replace: true });
-        Nprogress.done()
+        NProgress.done()
       }
     }
   });
@@ -54,7 +54,7 @@ const createRouterGuards = function(router) {
       console.error('路由导航失败：', failure)
     }
 
-    Nprogress.done()
+    NProgress.done()
   })
 
   router.onError(error => {
@@ -64,15 +64,15 @@ const createRouterGuards = function(router) {
 
 
 export const routes = [
-  {
-    path: "/",
-    name: "Layout",
-    redirect: "/dashboard/welcome",
-    component: Layout,
-    meta: {
-      title: "首页",
-    },
-  },
+  // {
+  //   path: "/",
+  //   name: "Layout",
+  //   redirect: "/dashboard/welcome",
+  //   component: Layout,
+  //   meta: {
+  //     title: "首页",
+  //   },
+  // },
   {
     path: '/login',
     name: 'Login',
@@ -101,6 +101,7 @@ export const resetRouter = () => {
 
 export async function setupRouter(app) {
   // TODO: 位置确认
+  // console.log(1111111)
   createRouterGuards(router)
   app.use(router)
   await router.isReady()

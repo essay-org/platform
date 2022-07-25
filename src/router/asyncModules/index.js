@@ -1,4 +1,4 @@
-export const constantRouteComponents = {};
+export const constantRouterComponents = {};
 
 const moduleFiles = import.meta.glob('./**/*.js', {eager: true});
 
@@ -9,7 +9,7 @@ Object.keys(moduleFiles).forEach(path => {
   const value = moduleFiles[path].default;
 
   Object.keys(value).forEach(ele => {
-    constantRouteComponents[ele] = value[ele]
+    constantRouterComponents[ele] = value[ele]
   })
 })
 

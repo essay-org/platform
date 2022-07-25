@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { resetRouter } from '@/router'
 import { generatorDynamicRouter } from '@/router/generatorRouter'
+import { logout, getInfo, permmenu } from '@/api/account'
+
 export const useUserStore = defineStore({
   id: 'user',
   state: () => ({
@@ -16,16 +18,16 @@ export const useUserStore = defineStore({
   },
   actions: {
     resetToken() {
-      this.token = localStorage.getItem('ACCESS_TOKEN')
+      this.token = window.localStorage.getItem('ACCESS_TOKEN')
       this.name = ''
       this.avatar = ''
       this.menus = []
       this.perms = []
       this.userInfo = {}
-      localStorage.clear('ACCESS_TOKEN')
+      window.localStorage.clear('ACCESS_TOKEN')
     },
     setToken(token = '') {
-      localStorage.setItem('ACCESS_TOKEN', token)
+      window.localStorage.setItem('ACCESS_TOKEN', token)
     },
     async afterLogin() {
       const [ userInfo, {perms, menus}]  = await Promise.all([getInfo(), permmenu()]);
