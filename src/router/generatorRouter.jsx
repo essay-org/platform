@@ -127,5 +127,4 @@ export const generatorDynamicRouter = (asyncMenus) => {
       routes: []
     }
   }
-
 }

@@ -89,6 +89,16 @@ export const router = createRouter({
 });
 
 
+// 移除路由表中有权限设置的路由
+export const resetRouter = () => {
+  router.getRoutes().forEach(route => {
+    const { name } = route
+    if(name && !whiteNameList.some(n => n === name)) {
+      router.hasRoute(name) && router.removeRoute(name)
+    }
+  })
+};
+
 export async function setupRouter(app) {
   // TODO: 位置确认
   createRouterGuards(router)
