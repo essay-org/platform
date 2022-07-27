@@ -8,7 +8,11 @@
       @submit.prevent="handleSubmit"
     >
       <a-form-item>
-        <a-input v-model:value="state.formInline.username" size="large" placeholder="rootadmin">
+        <a-input
+          v-model:value="state.formInline.username"
+          size="large"
+          placeholder="rootadmin"
+        >
           <template #prefix><user-outlined type="user" /></template>
         </a-input>
       </a-form-item>
@@ -42,7 +46,7 @@ import { defineComponent, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { message, Modal } from "ant-design-vue";
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
     UserOutlined,
@@ -92,18 +96,18 @@ export default defineComponent({
 });
 </script>
 <style lang="less" scoped>
-.login {
-  :deep(.ant-form) {
-    width: 400px;
+:deep(.ant-form) {
+  width: 400px;
 
-    .ant-col {
-      width: 100%;
-    }
-
-    .ant-form-item-label {
-      padding-right: 6px;
-    }
+  .ant-col {
+    width: 100%;
   }
+
+  .ant-form-item-label {
+    padding-right: 6px;
+  }
+}
+.login {
   display: flex;
   width: 100vw;
   height: 100vh;

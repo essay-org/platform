@@ -3,7 +3,7 @@ import { useUserStore } from '@/store/modules/user';
 import NProgress from 'nprogress';
 import Layout from "@/layout/index.vue";
 import Login from '@/views/login/index.vue';
-import Welcome from '@/views/dashboard/welcome/index.vue';
+// import Welcome from '@/views/dashboard/welcome/index.vue';
 
 // 无需登录验证的路由
 const whiteNameList = ['Login', 'error', 'error-404'];
@@ -64,15 +64,15 @@ const createRouterGuards = function(router) {
 
 
 export const routes = [
-  // {
-  //   path: "/",
-  //   name: "Layout",
-  //   redirect: "/dashboard/welcome",
-  //   component: Layout,
-  //   meta: {
-  //     title: "首页",
-  //   },
-  // },
+  {
+    path: "/",
+    name: "Layout",
+    redirect: "/dashboard/welcome", // 登录成功，默认跳转到面板页面
+    component: Layout,
+    meta: {
+      title: "首页",
+    },
+  },
   {
     path: '/login',
     name: 'Login',
@@ -101,7 +101,6 @@ export const resetRouter = () => {
 
 export async function setupRouter(app) {
   // TODO: 位置确认
-  // console.log(1111111)
   createRouterGuards(router)
   app.use(router)
   await router.isReady()
