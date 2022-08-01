@@ -4,6 +4,7 @@ import { useUserStore } from '@/store/modules/user'
 
 const UNKNOWN_ERROR = '未知错误，请重试';
 
+const baseApiUrl = import.meta.env.VITE_BASE_API
 const service = axios.create({
   timeout: 6000,
 })
@@ -44,13 +45,13 @@ service.interceptors.response.use((response) => {
 })
 
 
-export const request = async (config, options) => {
+export const request = async (config, options = {}) => {
   try {
     const { successMsg, errorMsg, permCode, isMock, isGetDataDirectly = true } = options
     if(permCode && !useUserStore().perms.includes(permCode)) {
       return message.error('你没有访问该接口的权限，请联系管理员！')
     }
-
+    config.url = baseApiUrl + config.url
     const res = await service.request(config)
     successMsg && message.success(successMsg)
     errorMsg && message.error(errorMsg);

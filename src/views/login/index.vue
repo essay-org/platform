@@ -27,6 +27,23 @@
         </a-input>
       </a-form-item>
       <a-form-item>
+        <a-input
+          v-model:value="state.formInline.verifyCode"
+          placeholder="验证码"
+          :maxlength="4"
+          size="large"
+        >
+          <template #prefix><SafetyOutlined /></template>
+          <template #suffix>
+            <img
+              :src="state.captcha"
+              class="captcha"
+              @click="setCaptcha"
+            />
+          </template>
+        </a-input>
+      </a-form-item>
+      <a-form-item>
         <a-button
           type="primary"
           html-type="submit"
@@ -42,22 +59,27 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from "vue";
+import { defineComponent, onMounted, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
 import { message, Modal } from "ant-design-vue";
-import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
+import { getImageCaptcha } from '@/api/login'
+import { UserOutlined, LockOutlined, SafetyOutlined } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
     UserOutlined,
     LockOutlined,
+    SafetyOutlined,
   },
   setup() {
     const state = reactive({
       laoding: false,
+      captcha: '',
       formInline: {
         username: "",
         password: "",
+        verifyCode: '',
+        captchaId: ''
       },
     });
 
@@ -88,9 +110,22 @@ export default defineComponent({
         });
       }
     };
+    onMounted(() => {
+      setCaptcha()
+    })
+    const setCaptcha = async () => {
+      const { id, img } = await getImageCaptcha({
+        width: 100,
+        height: 50,
+      })
+      state.captcha = img
+      state.formInline.captchaId = id
+    }
+
     return {
       state,
       handleSubmit,
+      setCaptcha,
     };
   },
 });
@@ -120,6 +155,10 @@ export default defineComponent({
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 20px;
+  }
+  .captcha {
+    position: absolute;
+    right: 0;
   }
 }
 </style>

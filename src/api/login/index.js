@@ -9,3 +9,12 @@ export function login(data) {
     isGetDataDirectly: false
   })
 }
+
+
+export function getImageCaptcha(params) {
+  return request({
+    url: 'captcha/img',
+    method: 'get',
+    params
+  })
+}
