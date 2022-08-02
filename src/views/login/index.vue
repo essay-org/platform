@@ -94,6 +94,8 @@ export default defineComponent({
       }
       message.loading("登录中...", 0);
       state.loading = true;
+
+      console.log(userStore.login(state.formInline))
       try {
         await userStore.login(state.formInline).finally(() => {
           state.loading = false;

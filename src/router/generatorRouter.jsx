@@ -3,8 +3,9 @@ import RouterView from '@/layout/routerView/index.vue';
 import NotFound from '@/views/error/404.vue';
 import { Result } from 'ant-design-vue';
 import { constantRouterComponents} from './asyncModules/index';
-import router, { routes } from './index';
+import router, { routes, loginRoute } from '@/router/index';
 import { uniqueSlash } from '@/utils/index'
+import common from '@/router/staticModules'
 
 const filterAsyncRoute = (routes, parentRoute, lastNamePath) => {
   return routes.filter(item => item.type !== 2 && item.isShow && item.parerntId == parentRoute?.id).map(item => {
@@ -113,9 +114,21 @@ export const generatorDynamicRouter = (asyncMenus) => {
   try {
     const routeList = filterAsyncRoute(asyncMenus)
     const layout = routes.find(item => item.name === 'Layout')
+    generatorNamePath(common)
+    const menus = [...common, ...routeList]
+    layout.children = menus
 
-    // generatorNamePath()
+    const removeRoute = router.addRoute(layout)
+    // 获取没有children的路由
 
+    const filterRoutes = router.getRoutes().filter((item) => {
+      return (!item.children.length || Object.is(item.meta?.hideChildrenInMenu, true)) && !outsideLayout.some(n => n.name === item.name)
+    })
+    removeRoute()
+    layout.children = [...filterRoutes]
+    router.addRoute(layout)
+
+    console.log('路由表：', router.getRoutes())
     return {
       menus,
       routes: layout.children

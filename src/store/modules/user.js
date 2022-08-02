@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 import { resetRouter } from '@/router'
 import { generatorDynamicRouter } from '@/router/generatorRouter'
 import { logout, getInfo, permmenu } from '@/api/account'
+import { login } from '@/api/login'
 
-export const useUserStore = defineStore({
-  id: 'user',
+export const useUserStore = defineStore('user', {
   state: () => ({
     token: '',
     name: 'admin',

@@ -22,7 +22,7 @@ const createRouterGuards = function(router) {
         NProgress.done()
       }
 
-      if(userStore.state.menus.length === 0) {
+      if(userStore.menus.length === 0) {
         // 获取最新菜单
         await userStore.afterLogin()
         if(!hasRoute) {
@@ -62,6 +62,14 @@ const createRouterGuards = function(router) {
   })
 }
 
+export const loginRoute = [{
+  path: '/login',
+  name: 'Login',
+  meta: {
+    title: '登录',
+  },
+  component: Login
+}]
 
 export const routes = [
   {
@@ -73,14 +81,7 @@ export const routes = [
       title: "首页",
     },
   },
-  {
-    path: '/login',
-    name: 'Login',
-    meta: {
-      title: '登录',
-    },
-    component: Login
-  }
+  ...loginRoute
 ];
 
 export const router = createRouter({

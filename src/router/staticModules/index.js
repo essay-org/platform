@@ -65,3 +65,50 @@ export const errorRoute =
   ],
 }
 
+export const redirectRoute = {
+  path: '/redirect',
+  component: RouterView,
+  name: 'RedirectTo',
+  meta: {
+    title: 'redirect',
+    hideInMenu: true,
+    hideInBreadcrumb: true
+  },
+  children: [
+    {
+      path: '/redirect/:path(.*)',
+      name: 'RedirectTo',
+      meta: {
+        title: 'redirect',
+        hideInMenu: true,
+      },
+      beforeEnter(to) {
+        const { params, query} = to
+        const { path, redirectType = 'path'} = params
+        // TODO: 功能确认
+        Reflect.deleteProperty(params, 'path')
+        Reflect.deleteProperty(params, '_redirect_type')
+        const fixPath = Array.isArray(path) ? path.join('/') : path
+        setTimeout(() => {
+          if(redirectType === 'name') {
+            router.replace({
+              name: fixPath,
+              query,
+              params
+            })
+          } else {
+            router.replace({
+              path: fixPath.startsWith('/') ? fixPath : `/${fixPath}`,
+              query
+            })
+          }
+        })
+
+        return true
+      }
+    }
+  ]
+}
+
+
+export default [dashboard, notFound, errorRoute, redirectRoute]
