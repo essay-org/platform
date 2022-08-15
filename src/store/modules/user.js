@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { resetRouter } from '@/router'
-import { generatorDynamicRouter } from '@/router/generatorRouter'
+import { generatorDynamicRouter } from '@/router/generatorRouter.jsx'
 import { logout, getInfo, permmenu } from '@/api/account'
 import { login } from '@/api/login'
 

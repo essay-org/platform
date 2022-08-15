@@ -18,25 +18,26 @@ const createRouterGuards = function(router) {
       const hasRoute = router.hasRoute(to.name)
 
       if(to.name === 'Login') {
-        next('/dashboard/welcome')
+        next({path: '/dashboard/welcome'})
         NProgress.done()
-      }
+        // debugger
+      } else {
+        if(userStore.menus.length === 0) {
+          // 获取最新菜单
+          await userStore.afterLogin()
+          // debugger
+          if(!hasRoute) {
+            // const redirect = decodeURIComponent(from.query.redirect || '')
+            next({...to, replace: true})
+          }
 
-      if(userStore.menus.length === 0) {
-        // 获取最新菜单
-        await userStore.afterLogin()
-        if(!hasRoute) {
-          // TODO: 路由不存在
+          // 在白名单
+          if(whiteNameList.some((n) => n === to.name)) {
+            next()
+          }
         } else {
           next()
         }
-
-        // 在白名单
-        if(whiteNameList.some((n) => n === to.name)) {
-          next()
-        }
-      } else {
-        next()
       }
     } else {
       if(whiteNameList.some((n) => n === to.name)) {

@@ -3,12 +3,12 @@ import RouterView from '@/layout/routerView/index.vue';
 import NotFound from '@/views/error/404.vue';
 import { Result } from 'ant-design-vue';
 import { constantRouterComponents} from './asyncModules/index';
-import router, { routes, loginRoute } from '@/router/index';
+import router, { routes, loginRoute as outsideLayout} from '@/router/index';
 import { uniqueSlash } from '@/utils/index'
 import common from '@/router/staticModules'
 
-const filterAsyncRoute = (routes, parentRoute, lastNamePath) => {
-  return routes.filter(item => item.type !== 2 && item.isShow && item.parerntId == parentRoute?.id).map(item => {
+const filterAsyncRoute = (routes = [], parentRoute = null, lastNamePath = []) => {
+  return routes.filter(item => item.type !== 2 && item.isShow && item.parerntId === parentRoute?.id).map(item => {
     const { router, viewPath, name, icon, orderNum, keepAlive } = item
     let fullPath = ''
     if(isUrl(router)) {
@@ -41,16 +41,18 @@ const filterAsyncRoute = (routes, parentRoute, lastNamePath) => {
         keepAlive,
       }
     }
-
     // 目录
     if(item.type === 0) {
       const children = filterAsyncRoute(routes, item, lastNamePath.concat(fullPath));
       // TODO: 功能确认
+
       if(children?.length) {
         route.component = RouterView
         route.children = children
         route.redirect = { name: children[0].name }
       } else {
+
+        // debugger
         route.component = (
           <Result
             status="500"
