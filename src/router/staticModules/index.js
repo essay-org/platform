@@ -1,4 +1,4 @@
-import RouterView from '@/layout/routerView/index.vue';
+import RouterView from '@/layout/routerView.vue';
 import Welcome from '@/views/dashboard/welcome/index.vue';
 import Error404 from '@/views/error/404.vue';
 

@@ -1,5 +1,5 @@
 import { isUrl } from '@/utils/index';
-import RouterView from '@/layout/routerView/index.vue';
+import RouterView from '@/layout/routerView.vue';
 import NotFound from '@/views/error/404.vue';
 import { Result } from 'ant-design-vue';
 import { constantRouterComponents} from './asyncModules/index';

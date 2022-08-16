@@ -3,7 +3,6 @@ import { useUserStore } from '@/store/modules/user';
 import NProgress from 'nprogress';
 import Layout from "@/layout/index.vue";
 import Login from '@/views/login/index.vue';
-// import Welcome from '@/views/dashboard/welcome/index.vue';
 
 // 无需登录验证的路由
 const whiteNameList = ['Login', 'error', 'error-404'];
