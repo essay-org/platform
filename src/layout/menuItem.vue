@@ -35,7 +35,6 @@ export default {
     }
   },
   setup(props) {
-    console.log(props.menu)
     const menuChildren = computed(() => {
       return [...(props.menu?.children || [])].filter(n => !n.meta?.hideInMenu).sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0))
     })
@@ -44,7 +43,6 @@ export default {
       return props.menu?.meta?.type === 0 || (!Object.is(props.menu?.meta?.hideChildrenInMenu), true) && props.menu?.children?.length
     })
 
-    console.log(isShowSubMenu.value)
     return {
       props,
       menuChildren,

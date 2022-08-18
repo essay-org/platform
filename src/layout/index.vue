@@ -12,13 +12,12 @@
     </a-layout-sider>
 
     <a-layout>
-      <a-layout-header></a-layout-header>
+      <page-header></page-header>
       <a-layout-content class="content">
         <tabs-view></tabs-view>
       </a-layout-content>
-      <a-layout-footer></a-layout-footer>
+      <page-footer></page-footer>
     </a-layout>
-
   </a-layout>
 </template>
 
@@ -27,11 +26,15 @@ import { computed, defineComponent, ref } from "vue";
 import TabsView from './tabsView.vue'
 import AsideMenu from './menu.vue'
 import AsideLogo from './logo.vue'
+import PageFooter from './footer/index.jsx'
+import PageHeader from './header/index.vue'
 export default defineComponent({
   components: {
     TabsView,
     AsideMenu,
     AsideLogo,
+    PageHeader,
+    PageFooter,
   },
   setup() {
     const collapsed = ref(false);

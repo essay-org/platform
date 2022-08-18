@@ -48,7 +48,6 @@ export default {
         .filter((n) => !n.meta?.hideInMenu)
         .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
     });
-    console.log(menus.value)
     const isSideMenu = computed(() => true);
 
     const getTargetMenu = (activeMenu) => {
