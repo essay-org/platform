@@ -9,3 +9,4 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ### TODO
 
 1. 为什么icon组件在jsx中不用注册可以直接使用
+2. Modal的icon属性，直接使用图标组件实现原理

@@ -1,5 +1,7 @@
 <template>
-    <div>welcome1</div>
+<div class="card">
+首页
+</div>
 </template>
 
 <script>
@@ -9,3 +11,6 @@ export default defineComponent({
 
 })
 </script>
+<style lang="less" scoped>
+// @import '@/styles/base.less';
+</style>
