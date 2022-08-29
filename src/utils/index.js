@@ -13,3 +13,8 @@ export function isUrl(path) {
 export function uniqueSlash(path) {
  return path.replace(/(?<!:)\/{2,}/g, '/')
 }
+
+
+export function formatMenu2Tree() {
+
+}
