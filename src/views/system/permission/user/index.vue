@@ -31,13 +31,28 @@
 
 <script>
 import { defineComponent } from "@vue/runtime-core";
+import { deptSchemas } from './'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 
 export default defineComponent({
   setup() {
-    const openDeptModal = () => {
-
+    const openDeptModal = async (record) => {
+      const [formRef] = await showModal({
+        modalProps: {
+          title: record.id ? '编辑部门' : '新增部门',
+          width: 700,
+          onFinish: async (values) => {
+            values.id = record.id
+            await (record.id ? updateDept : createDept)(values)
+            fetchDeptList()
+          }
+        },
+        formProps: {
+          labelWidth: 100,
+          schemas: deptSchemas
+        }
+      })
     }
 
     const delDept = () => {
