@@ -1,3 +1,5 @@
+import { getRoleList } from '@/api/system/role'
+
 export const deptSchemas = [
   {
     field: 'name',
@@ -112,13 +114,3 @@ export const updatePswSchemas = [
     rules: [{required: true, type: 'string'}],
   },
 ]
-
-export const transferUserSchemas = [
-  {
-    field: 'departmentId',
-    component: 'TreeSelect',
-    label: '转移到',
-    rules: [{required: true, type: 'number'}]
-  }
-]
-
