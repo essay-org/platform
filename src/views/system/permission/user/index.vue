@@ -1,5 +1,6 @@
 <template>
   <div class="card">
+    {{ state.deptTree }}
     <div class="left">
       <a-tree
         v-model:expandedKeys="state.expandedKeys"
@@ -34,58 +35,79 @@
     </div>
 
     <div class="right">
-      <dynamic-table
-        header-title="用户管理"
-        show-index
-        title-tooltip="请不要随意删除用户，避免到影响其他用户的使用"
-        :data-request="loadTableData"
-        :columns="columns"
-        :scroll="{ x: 2000 }"
-        :row-selection="rowSelection"
-      >
-        <template #toolbar>
-           <a-button type="primary" :disabled="!$auth('sys.user.add')" @click="openUserModal({})">
-            <PlusOutlined /> 新增
-          </a-button>
-        </template>
-      </dynamic-table>
+
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
-import { deptSchemas } from "./formSchemas";
+import { defineComponent, reactive, ref } from "@vue/runtime-core";
+import { createDept, deleteDept, updateDept, getDeptList, transferDept } from '@/api/system/dept';
+
+// import { deptSchemas } from "./formSchemas";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons-vue";
-import { Modal } from "ant-design-vue";
-import { useFormModal } from '@/hooks/useModal/index'
-const [showModal] = useFormModal()
-const [DynamicTable, dynamicTableInstance ] = useTable()
+import { formatDept2Tree, findChildById } from '@/utils/index';
+
+// import { Modal } from "ant-design-vue";
+// import { useFormModal } from '@/hooks/useModal/index'
+
+// const [showModal] = useFormModal()
+
+// const [DynamicTable, dynamicTableInstance ] = useTable()
 
 export default defineComponent({
+  components: {
+    DeleteOutlined,
+    EditOutlined,
+    PlusOutlined,
+  },
   setup() {
     const openDeptModal = async (record) => {
-      const [formRef] = await showModal({
-        modalProps: {
-          title: record.id ? "编辑部门" : "新增部门",
-          width: 700,
-          onFinish: async (values) => {
-            values.id = record.id;
-            await (record.id ? updateDept : createDept)(values);
-            fetchDeptList();
-          },
-        },
-        formProps: {
-          labelWidth: 100,
-          schemas: deptSchemas,
-        },
-      });
+      // const [formRef] = await showModal({
+      //   modalProps: {
+      //     title: record.id ? "编辑部门" : "新增部门",
+      //     width: 700,
+      //     onFinish: async (values) => {
+      //       values.id = record.id;
+      //       await (record.id ? updateDept : createDept)(values);
+      //       fetchDeptList();
+      //     },
+      //   },
+      //   formProps: {
+      //     labelWidth: 100,
+      //     schemas: deptSchemas,
+      //   },
+      // });
     };
 
     const delDept = () => {};
 
+    const state = reactive({
+      expandedKeys: [],
+      departmentIds: [],
+      deptTree: [],
+    })
+
+    const deptListLoading = ref(false);
+
+    const fetchDeptList = async () => {
+      deptListLoading.value = true
+      const dept = await getDeptList().finally(() => (deptListLoading.value = false))
+      // debugger
+      state.deptTree = formatDept2Tree(dept); // TODO: formDept2Tree
+      console.log(state.deptTree, dept)
+      state.expandedKeys = [...state.expandedKeys, ...state.deptTree.map(n => Number(n.key))]
+    }
+
+    fetchDeptList()
+
+    const onTreeSelect = () => {
+
+    }
     return {
-      openDeptModal
+      state,
+      openDeptModal,
+      onTreeSelect
     };
   },
 });
