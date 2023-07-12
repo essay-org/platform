@@ -73,7 +73,7 @@
             const routes = util.generateRoute(menuList)
             routes.map(route => {
               const url = `./../views/${route.component}.vue`
-              route.component = () => import(url)
+              route.component = () => import(/* @vite-ignore */ url)
               this.$router.addRoute('home', route)
             })
           } catch (error) {}

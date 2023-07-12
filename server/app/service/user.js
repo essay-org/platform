@@ -1,7 +1,5 @@
 'use strict';
 const { uid } = require('uid');
-const svgCaptcha = require('svg-captcha');
-const fs = require('fs');
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
 const Service = require('egg').Service;

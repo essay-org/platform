@@ -4,8 +4,9 @@ const BaseController = require('../core/base');
 
 class LeaveController extends BaseController {
 
-  async list(data) {
+  async list() {
     // { roleName }
+    const data = this.ctx.state.user;
     const { applyState, type, pageNum, pageSize } = this.ctx.request.query;
     const { leave } = this.ctx.service;
     let params = {};
@@ -15,22 +16,29 @@ class LeaveController extends BaseController {
         params.curAuditUserName = data.userName;
         params.applyState = { $in: [ 1, 2 ] };
       } else if (applyState > 2) { // 查询审核通过、审核拒绝、作废
-        params = { 'auditFlows.userId': data.userId, applyState };
+        params = {
+          auditFlows: {
+            userId: data.userId,
+          },
+          applyState,
+        };
       } else { // 查询全部
-        params['auditFlows.userId'] = data.userId;
+        params.auditFlows = { userId: data.userId };
       }
     } else {
       // 查询用户个人申请列表
       // 查询是否有某条文档的 applyUser 对象下的 userId 值与 data.userId 相同
-      params['applyUser.userId'] = data.userId;
+      params.applyUser = { userId: data.userId };
       if (applyState) params.applyState = applyState;
     }
+    // console.log({ ...params, pageNum, pageSize });
 
     const result = await leave.find({ ...params, pageNum, pageSize });
     this.success(result);
   }
 
-  async save(data) {
+  async save() {
+    const data = this.ctx.state.user;
     const { id, action, ...params } = this.ctx.request.body;
     const { leave, dept: deptServe } = this.ctx.service;
     if (action === 'add') {
@@ -80,7 +88,8 @@ class LeaveController extends BaseController {
     }
   }
 
-  async approve(data) {
+  async approve() {
+    const data = this.ctx.state.user;
     const { id, action, remark } = this.ctx.request.body;
     const { leave } = this.ctx.service;
     const params = {};
@@ -113,7 +122,8 @@ class LeaveController extends BaseController {
     this.success(result, '处理成功');
   }
 
-  async count(data) {
+  async count() {
+    const data = this.ctx.state.user;
     const { leave } = this.ctx.service;
     const total = await leave.findCount({
       curAuditUserName: data.userName,

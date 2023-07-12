@@ -23,9 +23,9 @@ module.exports = function (app) {
         endTime: {
             type: DATE,
         },
+        // {"userId": "", "userName": "", "userEmail": ""}
         applyUser: {
             type: JSON,
-            defaultValue: '{"userId": "", "userName": "", "userEmail": ""}'
         },
         leaveTime: {
            type: STRING,
@@ -40,13 +40,13 @@ module.exports = function (app) {
         curAuditUserName: {
             type: STRING
         },
+        // {"userId": "", "userName": "", "userEmail": ""}
         auditFlows: {
             type: JSON,
-            defaultValue: '{"userId": "", "userName": "", "userEmail": ""}'
         },
+        // {"userId": "", "userName": "", "userEmail": "", "createTime": "", "remark": "", "action": ""}
         auditLogs: {
             type: JSON,
-            defaultValue: '{"userId": "", "userName": "", "userEmail": "", "createTime": "", "remark": "", "action": ""}'
         },
         updatedAt: {
             type: DATE,

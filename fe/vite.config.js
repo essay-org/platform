@@ -21,7 +21,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // localhost:8088/api 会转发到 localhost:7001/api
-        target: 'http://localhost:3000'
+        target: 'http://127.0.0.1:7077'
       }
     }
   },

@@ -18,10 +18,12 @@ class LeaveService extends Service {
         }
       );
     } else {
+      const id = uid();
       result = await Leave.create({
-        id: uid(),
+        id,
         ...rest,
       });
+      result.id = id;
     }
     return result;
   }
@@ -30,9 +32,19 @@ class LeaveService extends Service {
     const result = await this.ctx.model.Leave.find(data);
     return result;
   }
-  async findOne(data) {
-    const result = await this.ctx.model.Leave.findOne(data);
-    return result;
+  async findOne({ pageNum, pageSize, ...rest }) {
+    // const result = await this.ctx.model.Leave.findOne(data);
+    const { page, skipIndex } = this.ctx.helper.pager({ pageSize, pageNum });
+    const total = await this.ctx.model.Leave.find({ ...rest }).count();
+    const result = await this.ctx.model.Leave.find({ ...rest }).limit(page.pageSize)
+      .offset(skipIndex);
+    return {
+      list: result,
+      page: {
+        ...page,
+        total,
+      },
+    };
   }
   async findCount(data) {
     const result = await this.ctx.model.Leave.find(data).count();
