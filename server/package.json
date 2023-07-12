@@ -38,9 +38,9 @@
   },
   "browserslist": "last 2 versions",
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server",
-    "stop": "egg-scripts stop --title=egg-server",
-    "dev": "egg-bin dev",
+    "start": "egg-scripts start --daemon --title=egg-server --port=7077",
+    "stop": "egg-scripts stop --title=egg-server --port=7077",
+    "dev": "egg-bin dev --port=7077",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",

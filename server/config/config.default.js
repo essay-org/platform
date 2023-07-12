@@ -39,6 +39,7 @@ module.exports = appInfo => {
       dialect: 'sqlite',
       database: `${appInfo.baseDir}/database/data.db`,
       connectionLimit: 10,
+      define: { underscored: false },
     },
     security: {
       csrf: {

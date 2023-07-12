@@ -22,10 +22,12 @@ class DeptService extends Service {
         }
       );
     } else {
+      const id = uid();
       result = await Dept.create({
-        id: uid(),
+        id,
         ...rest,
       });
+      result.id = id;
     }
     return result;
   }

@@ -22,14 +22,18 @@ class RoleService extends Service {
         }
       );
     } else {
+      const id = uid();
       result = await Role.create({
-        id: uid(),
+        id,
         ...rest,
       });
+      result.id = id;
     }
     return result;
   }
-
+  async findAll() {
+    return await this.ctx.model.Role.find();
+  }
   async find(data) {
     const { roleName, pageSize, pageNum } = data;
     const { page, skipIndex } = this.ctx.helper.pager({ pageSize, pageNum });

@@ -23,11 +23,14 @@ class UserService extends Service {
         }
       );
     } else {
+      const userId = uid();
       result = await User.create({
-        id: uid(),
+        userId,
         ...rest,
+        userEmail,
         userPwd,
       });
+      result.userId = userId;
     }
     return result;
   }
@@ -40,7 +43,7 @@ class UserService extends Service {
   }
   async remove(id) {
     const { User } = this.ctx.model;
-    return await User.remove({ id });
+    return await User.remove({ userId: id });
   }
   async login({ userName, userPwd }) {
     const { User } = this.ctx.model;
@@ -59,9 +62,22 @@ class UserService extends Service {
 
     return result;
   }
-  async list(data) {
+  async find({ pageNum, pageSize, ...rest }) {
+    const { page, skipIndex } = this.ctx.helper.pager({
+      pageSize,
+      pageNum,
+    });
     const { User } = this.ctx.model;
-    return await User.find(data);
+    const total = await User.find({ ...rest }).count();
+    const result = await User.find({ ...rest }).limit(page.pageSize)
+      .offset(skipIndex);
+    return {
+      list: result,
+      page: {
+        ...page,
+        total,
+      },
+    };
   }
   // 过期时间单位是秒，这里默认7天有效期
   sign(data) {

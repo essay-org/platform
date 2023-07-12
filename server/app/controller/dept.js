@@ -40,7 +40,7 @@ class DeptController extends BaseController {
     if (query.deptName) {
       this.success(rootList);
     } else {
-      const treeList = getTreeDept(rootList, null);
+      const treeList = getTreeDept(rootList, undefined);
       this.success(treeList);
     }
   }

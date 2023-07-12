@@ -8,13 +8,14 @@
 module.exports = app => {
   const { router, controller, middleware } = app;
   const { auth } = middleware;
+  router.prefix('/api');
   // users
   router.post('/users/login', controller.user.login);
   router.get('/users/list', controller.user.list);
   router.post('/users/delete', controller.user.remove);
   router.post('/users/operate', controller.user.save);
   router.get('/users/all/list', controller.user.allList);
-  router.post('/users/getPermissionList', controller.menu.permissionList);
+  router.get('/users/getPermissionList', auth(), controller.menu.permissionList);
   // roles
   router.get('/roles/allList', controller.role.allList);
   router.get('/roles/list', controller.role.list);

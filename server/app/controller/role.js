@@ -5,7 +5,7 @@ const BaseController = require('../core/base');
 class RoleController extends BaseController {
   async allList() {
     const { role } = this.ctx.service;
-    const result = await role.find();
+    const result = await role.findAll();
     this.success(result);
   }
 

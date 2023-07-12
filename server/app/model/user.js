@@ -1,7 +1,7 @@
 module.exports = function (app) {
   const {
     Bone,
-    DataTypes: { STRING, DATE, BIGINT},
+    DataTypes: { STRING, DATE, BIGINT, JSON},
   } = app.model;
   class User extends Bone {
     static table = 'user';
@@ -10,11 +10,9 @@ module.exports = function (app) {
       userId: {
         type: STRING,
         primaryKey: true,
-        columnName: 'userId',
       },
       userName: {
         type: STRING,
-        columnName: 'userName',
         validate: {
           notNull: true,
           notEmpty: true,
@@ -22,7 +20,6 @@ module.exports = function (app) {
       },
       userPwd: {
         type: STRING,
-        columnName: 'userPwd',
         validate: {
           notNull: true,
           notEmpty: true,
@@ -30,9 +27,8 @@ module.exports = function (app) {
       },
       userEmail: {
         type: STRING,
-        columnName: 'userEmail',
+        unique: true,
         validate: {
-          unique: true,
           notNull: true,
           notEmpty: true,
         },
@@ -48,9 +44,7 @@ module.exports = function (app) {
       },
       // string array
       deptId: {
-        type: STRING,
-        columnName: 'deptId',
-        defaultValue: ''
+        type: JSON,
       },
       // 1: 在职 2: 离职 3: 试用期
       state: {
@@ -69,9 +63,7 @@ module.exports = function (app) {
       },
       // 系统角色 string array
       roleList: {
-        type: STRING,
-        columnName: 'roleList',
-        defaultValue: ''
+        type: JSON,
       },
       remark: {
         type: STRING,
@@ -79,20 +71,16 @@ module.exports = function (app) {
       },
       lastLoginTime: {
         type: DATE,
-        columnName: 'lastLoginTime',
         defaultValue: new Date()
       },
       updatedAt: {
         type: DATE,
-        columnName: 'updatedAt',
       },
       createdAt: {
         type: DATE,
-        columnName: 'createdAt'
       },
       deleteAt: {
         type: DATE,
-        columnName: 'deleteAt'
       },
     };
   }

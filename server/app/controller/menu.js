@@ -6,7 +6,6 @@ const BaseController = require('../core/base');
 const getTreeMenu = function(rootList, parentId) {
   const list = [];
   for (let i = 0; i < rootList.length; i++) {
-    // rootList[i] 是一个 mongoose 查询对象，其中就有暴露出来的字段，但还是需要通过 _doc 拿到集合中真正的数据
     const item = rootList[i];
     // 只要 item.parentId 的最后一个与当前传入的 parentId 相同，那么 item 就属于 children，放入 list 返回出去
     if (item.parentId[item.parentId.length - 1] === parentId) {
@@ -54,7 +53,7 @@ class MenuController extends BaseController {
       result = await menu.remove(id);
     }
 
-    if (!result) this.fail('操作失败');
+    if (!result) return this.fail('操作失败');
     this.success(result);
   }
 
@@ -63,11 +62,15 @@ class MenuController extends BaseController {
     const query = this.ctx.request.query;
     const { menu } = this.ctx.service;
     const menus = await menu.find(query);
-    const permissionList = getTreeMenu(menus, null);
+    console.log(menus);
+    const permissionList = getTreeMenu(menus, undefined);
     this.success(permissionList);
   }
 
-  async permissionList(data) {
+  // 用户拥有的菜单权限
+  async permissionList() {
+    const data = this.ctx.state.user;
+    // console.log(11111111, data);
     const menuList = await this.getMenuList(data.role, data.roleList);
     const actionList = getActionList(JSON.parse(JSON.stringify(menuList)));
     this.success({
@@ -76,15 +79,19 @@ class MenuController extends BaseController {
     });
   }
 
-
+  // 内部方法
   async getMenuList(userRole, roleKeys) {
+    console.log(userRole, roleKeys);
     let list = [];
     const { menu, role } = this.ctx.service;
     if (userRole === 0) {
       list = await menu.find();
     } else {
-      list = await role.find({ id: { $in: roleKeys } });
+      list = await role.findAll({ id: { $in: roleKeys } });
+      // list = JSON.parse(JSON.stringify(list));
+      list = list.toObject();
       let permissionList = [];
+      console.log(111111, list);
       list.forEach(role => {
         const { checkedKeys, halfCheckedKeys } = role.permissionList;
         permissionList = permissionList.concat([ ...checkedKeys, ...halfCheckedKeys ]);
@@ -93,7 +100,7 @@ class MenuController extends BaseController {
       permissionList = [ ...new Set(permissionList) ];
       list = await menu.find({ id: { $in: permissionList } });
     }
-    return getTreeMenu(list, null);
+    return getTreeMenu(list, undefined);
   }
 }
 

@@ -12,7 +12,6 @@ module.exports = function (app) {
       },
       roleName: {
         type: STRING,
-        columnName: 'roleName',
         validate: {
           notEmpty: true,
           notNull: true
@@ -25,21 +24,16 @@ module.exports = function (app) {
       // {checkedKeys: [], halfCheckedKeys: []}
       permissionList: {
         type: JSON,
-        columnName: 'permissionList',
-        defaultValue: '',
       },
       
       updatedAt: {
         type: DATE,
-        columnName: 'updatedAt',
       },
       createdAt: {
         type: DATE,
-        columnName: 'createdAt'
       },
       deleteAt: {
         type: DATE,
-        columnName: 'deleteAt'
       },
     };
   }

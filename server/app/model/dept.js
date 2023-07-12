@@ -12,36 +12,28 @@ module.exports = function (app) {
         },
         deptName: {
             type: STRING,
-            columnName: 'deptName'
         },
         userId: {
            type: STRING,
-           columnName: 'userId',
         },
         userName: {
           type: STRING,
-          columnName: 'userName',
         },
         userEmail: {
           type: STRING,
-          columnName: 'userEmail'
         },
         // []
         parentId: {
-          type: STRING,
-          columnName: 'parentId'
+          type: JSON,
         },
         updatedAt: {
             type: DATE,
-            columnName: 'updatedAt',
           },
           createdAt: {
             type: DATE,
-            columnName: 'createdAt'
           },
           deleteAt: {
             type: DATE,
-            columnName: 'deleteAt'
           },
       };
     }

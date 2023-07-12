@@ -13,21 +13,17 @@ module.exports = function (app) {
         menuName: {
           type: STRING,
           defaultValue: '',
-          columnName: 'menuName'
         },
         menuType: {
           type: BIGINT,
-          columnName: 'menuType'
         },
         menuState: {
           type: BIGINT,
-          columnName: 'menuState',
         },
         // 权限标识
         menuCode: {
           type: STRING,
           defaultValue: '',
-          columnName: 'menuCode',
         },
         // 路由地址
         path: {
@@ -46,20 +42,20 @@ module.exports = function (app) {
         },
         // 父级菜单ID ['', '']
         parentId: {
-          type: STRING,
-          columnName: 'parentId'
-        },    
+          type: JSON,
+        },
+        order: {
+          type: BIGINT,
+          defaultValue: 0,
+        },
         updatedAt: {
           type: DATE,
-          columnName: 'updatedAt',
         },
         createdAt: {
           type: DATE,
-          columnName: 'createdAt'
         },
         deleteAt: {
           type: DATE,
-          columnName: 'deleteAt'
         },
       };
     }

@@ -22,10 +22,12 @@ class MenuService extends Service {
         }
       );
     } else {
+      const id = uid();
       result = await Menu.create({
-        id: uid(),
+        id,
         ...rest,
       });
+      result.id = id;
     }
     return result;
   }
