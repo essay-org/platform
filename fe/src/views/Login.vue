@@ -55,6 +55,7 @@
         this.$refs.userForm.validate(valid => {
           if (valid) {  // 校验通过
             this.$api.login(this.user).then(async res => {
+              console.log(res)
               this.$store.commit('saveUserInfo', res)  // $store 是 vuex 自己挂载的
               await this.loadAsyncRoutes()
               this.$router.push('/welcome')

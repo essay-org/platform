@@ -1,2 +1,2 @@
-**/*.d.ts
-node_modules/
+coverage
+app/public/lib/*

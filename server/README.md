@@ -1,33 +1,52 @@
-# hackernews-tegg
+<p align="center" dir="auto">
+    <img src="/app/public/favicon.png" width="70px">
+</p>
+<p align="center">
+    <a href="https://github.com/wmui/essay"><img src="https://img.shields.io/badge/database-sqlite3-blue" alt="database"></a>
+    <a href="https://github.com/wmui/essay"><img src="https://img.shields.io/badge/node-%3E%3D16.0.0-orange.svg" alt="Version"></a>
+    <a href="https://github.com/wmui/essay"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+</p>
 
-[Hacker News](https://news.ycombinator.com/) showcase using [tegg](https://github.com/eggjs/tegg)
+<p align="center"><a href="https://ppx.link" target="_blank">演示网站</a></p>
 
-## QuickStart
+> Essay - 个性化博客系统
 
-### Development
+### 安装
+
+安装前请确保本地的Node版本大于16，本机已安装sqlite
 
 ```bash
-$ npm i
-$ npm run dev
-$ open http://localhost:7001/
+# 下载项目
+git clone https://github.com/wmui/essay.git
+# 安装依赖
+yarn install # or npm install
+# 启动项目
+npm run start
 ```
 
-Don't tsc compile at development mode, if you had run `tsc` then you need to `npm run clean` before `npm run dev`.
+项目启动后，访问 [http://127.0.0.1:7001/install](http://127.0.0.1:7001/install)，进入安装界面：
 
-### Deploy
+<p align="center" dir="auto">
+    <img src="/app/public/1.png" width="400px">
+</p>
 
-```bash
-$ npm run tsc
-$ npm start
-```
+点击下一步，设置管理员密码：
 
-### Npm Scripts
+<p align="center" dir="auto">
+    <img src="/app/public/2.png" width="400px">
+</p>
 
-- Use `npm run lint` to check code style
-- Use `npm test` to run unit test
-- se `npm run clean` to clean compiled js at development mode once
+点击完成设置，安装就完成了，超简单
 
-### Requirement
+<p align="center" dir="auto">
+    <img src="/app/public/3.png" width="400px">
+</p>
 
-- Node.js >= 16.x
-- Typescript >= 4.x
+### 开始写作
+
+点击新随笔，开始愉快的创作吧
+
+
+<p align="center" dir="auto">
+    <img src="/app/public/4.png" width="500px">
+</p>

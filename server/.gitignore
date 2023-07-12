@@ -1,20 +1,23 @@
 logs/
 npm-debug.log
+yarn-error.log
 node_modules/
+*-lock.json
+*-lock.yaml
+yarn.lock
 coverage/
 .idea/
 run/
-logs/
 .DS_Store
-.vscode
-*.swp
-*.lock
-*.js
-.eslintcache
+*.sw*
+*.un~
+typings/
+.nyc_output/
 
-app/**/*.js
-test/**/*.js
-config/**/*.js
-app/**/*.map
-test/**/*.map
-config/**/*.map
+# eeeay
+database/*
+!database/.gitkeep
+app/public/media/*
+!app/public/media/.gitkeep
+demo/
+install.lock

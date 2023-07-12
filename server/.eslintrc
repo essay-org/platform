@@ -1,4 +1,12 @@
 {
+  "extends": "eslint-config-egg",
   "root": true,
-  "extends": "eslint-config-egg/typescript"
+  "rules": {
+    "space-before-function-paren": 0,
+    "no-unused-vars": 0
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
 }
