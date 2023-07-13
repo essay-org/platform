@@ -47,19 +47,19 @@ class AppBootHook {
 
   async serverDidReady() {
     await this.app.model.sync({ alter: true });
-    const user = await this.app.model.User.findOne();
-    if (!user) {
-      // 数据初始化
-      await this.app.model.User.create({
-        userId: uid(),
-        userName: 'admin',
-        userPwd: md5('123456'),
-        userEmail: 'admin@qq.com',
-        sex: 0,
-        role: 0,
-        state: 1,
-      });
-    }
+    // const user = await this.app.model.User.findOne();
+    // if (!user) {
+    //   // 数据初始化
+    //   await this.app.model.User.create({
+    //     userId: uid(),
+    //     userName: 'admin',
+    //     userPwd: md5('123456'),
+    //     userEmail: 'admin@qq.com',
+    //     sex: 0,
+    //     role: 0,
+    //     state: 1,
+    //   });
+    // }
     // http / https server 已启动，开始接受外部请求
     // 此时可以从 app.server 拿到 server 的实例
   }

@@ -24,10 +24,7 @@ module.exports = function (app) {
       // {checkedKeys: [], halfCheckedKeys: []}
       permissionList: {
         type: JSON,
-        defaultValue: {
-          checkedKeys: [], 
-          halfCheckedKeys: []
-        }
+        // defaultValue: {}
       },
       
       updatedAt: {

@@ -28,6 +28,7 @@ class LeaveController extends BaseController {
     } else {
       // 查询用户个人申请列表
       // 查询是否有某条文档的 applyUser 对象下的 userId 值与 data.userId 相同
+      // FIX: 这里需要使用json查询json_each，暂时不做了
       params.applyUser = { userId: data.userId };
       if (applyState) params.applyState = applyState;
     }
@@ -39,6 +40,7 @@ class LeaveController extends BaseController {
 
   async save() {
     const data = this.ctx.state.user;
+    console.log(data);
     const { id, action, ...params } = this.ctx.request.body;
     const { leave, dept: deptServe } = this.ctx.service;
     if (action === 'add') {
@@ -53,7 +55,7 @@ class LeaveController extends BaseController {
       // 查找当前部门信息，内含负责人信息
       const dept = await deptServe.findOne({ id });
       // 获取人事部门和财务部门负责人信息
-      const userList = await dept.find({ deptName: { $in: [ '人事部门', '财务部门' ] } });
+      const userList = await deptServe.find({ deptName: { $in: [ '人事部门', '财务部门' ] } });
 
       // 当前审批负责人
       const curAudtiUserName = dept.userName;
