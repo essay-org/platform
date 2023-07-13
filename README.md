@@ -6,8 +6,8 @@
     <a href="https://github.com//essay-org/platform"><img src="https://img.shields.io/badge/node-%3E%3D16.0.0-orange.svg" alt="Version"></a>
     <a href="https://github.com//essay-org/platform"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>
-
-<p align="center"><a href="https://ppx.link" target="_blank">演示网站</a></p>
+<!-- 
+<p align="center"><a href="https://ppx.link" target="_blank">演示网站</a></p> -->
 
 > 通用管理后台系统
 
@@ -54,21 +54,21 @@ npm run dev # 访问 http://127.0.0.1:7077
 
 
 <p align="center" dir="auto">
-    <img src="/app/public/2.png" width="400px">
+    <img src="/public/2.png" width="400px">
 </p>
 
 ### 角色管理
 
 
 <p align="center" dir="auto">
-    <img src="/app/public/4.png" width="400px">
+    <img src="/public/4.png" width="400px">
 </p>
 
 ### 部门管理
 
 
 <p align="center" dir="auto">
-    <img src="/app/public/3.png" width="400px">
+    <img src="/public/3.png" width="400px">
 </p>
 
 # 其他说明
