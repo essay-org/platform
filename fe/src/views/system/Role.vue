@@ -23,12 +23,12 @@
             <el-button size="small" @click="handleEdit(scope.row)" v-has="'role-edit'">编辑</el-button>
             <el-button type="primary" size="small" @click="handleOpenPermission(scope.row)"
               v-has="'role-setting'">设置权限</el-button>
-            <el-button type="danger" size="small" @click="handleDel(scope.row._id)" v-has="'role-delete'">删除</el-button>
+            <el-button type="danger" size="small" @click="handleDel(scope.row.id)" v-has="'role-delete'">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination class="pagination" background layout="prev, pager, next" :total="pager.total"
-        :page-size="pager.pageSize" @update:current-change="handleCurrentChange" />
+        :page-size="pager.pageSize" @update:page-size="handleCurrentChange" />
     </div>
     <!-- 角色操作弹框 -->
     <el-dialog title="角色新增" v-model="showModal">
@@ -57,7 +57,7 @@
             node-key 用于设置和获取选中节点
             default-expand-all 默认展开全部子节点
            -->
-          <el-tree ref="tree" :data="menuList" default-expand-all show-checkbox node-key="_id"
+          <el-tree ref="tree" :data="menuList" default-expand-all show-checkbox node-key="id"
             :props="{ label: 'menuName' }" />
         </el-form-item>
       </el-form>
@@ -164,9 +164,9 @@ export default {
       })
     },
     // 角色删除
-    async handleDel(_id) {
+    async handleDel(id) {
       try {
-        await this.$api.roleSubmit({ _id, action: 'delete' })
+        await this.$api.roleSubmit({ id, action: 'delete' })
         this.$message.success('删除成功')
         this.getRoleList()
       } catch (error) {
@@ -218,7 +218,7 @@ export default {
     },
     handleOpenPermission(row) {
       this.showPermission = true
-      this.curRoleId = row._id
+      this.curRoleId = row.id
       this.curRoleName = row.roleName
       const { checkedKeys } = row.permissionList
       this.$nextTick(() => {
@@ -231,11 +231,11 @@ export default {
       const checkedKeys = [], parentKeys = []
       // 区分菜单和按钮，checkedKeys 中都是按钮，parentKeys 中都是菜单
       nodes.map(node => {
-        if (!node.children) checkedKeys.push(node._id)
-        else parentKeys.push(node._id)
+        if (!node.children) checkedKeys.push(node.id)
+        else parentKeys.push(node.id)
       })
       const params = {
-        _id: this.curRoleId,
+        id: this.curRoleId,
         permissionList: {
           checkedKeys,
           halfCheckedKeys: parentKeys.concat(halfKeys)
@@ -251,7 +251,7 @@ export default {
         while (arr.length) {
           const item = arr.pop()
           if (item.children && item.action) {  // 按钮的上一级菜单
-            actionMap[item._id] = item.menuName
+            actionMap[item.id] = item.menuName
           }
           if (item.children && !item.action) {  // 一级菜单，子数组不是按钮的
             deep(item.children.slice())

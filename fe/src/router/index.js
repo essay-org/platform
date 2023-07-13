@@ -54,7 +54,7 @@ router.beforeEach((to, from, next) => {
 
 // 判断当前地址是否可以访问
 function checkPermission (path) {
-  console.log(router.getRoutes())
+  console.log(router.getRoutes(), path)
   return router.getRoutes().some(route => route.path === path)
 }
 
@@ -62,7 +62,8 @@ async function loadAsyncRoutes () {
   const userInfo = store.state.userInfo
   if (userInfo.token) {
     try {
-      const { menuList } = await API.getPermissionList()
+      // const { menuList } = await API.getPermissionList()
+      const menuList = store.state.menuList
       const routes = util.generateRoute(menuList)
       routes.map(route => {
         // 这里不能用 @，且要用变量形式放入 import 中，否则加载不出来

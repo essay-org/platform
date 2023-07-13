@@ -39,6 +39,10 @@ class UserService extends Service {
       userEmail,
     });
   }
+  async findAll(data) {
+    const { User } = this.ctx.model;
+    return await User.find(data);
+  }
   async remove(id) {
     const { User } = this.ctx.model;
     return await User.remove({ userId: id });

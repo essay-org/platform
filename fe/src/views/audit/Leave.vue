@@ -30,14 +30,14 @@
         <el-table-column label="操作" width="150">
           <template #default="scope">
             <el-button size="small" @click="handleDetail(scope.row)">查看</el-button>
-            <el-button v-if="scope.row.applyState <= 2" type="danger" size="small" @click="handleDelete(scope.row._id)">作废</el-button>
+            <el-button v-if="scope.row.applyState <= 2" type="danger" size="small" @click="handleDelete(scope.row.id)">作废</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="pagination" background layout="prev, pager, next"
         :total="pager.total" :page-size="pager.pageSize"
-        @update:current-change="handleCurrentChange"
+        @update:page-size="handleCurrentChange"
       />
     </div>
     <el-dialog title="申请休假" v-model="showModal" width="70%">
@@ -279,9 +279,9 @@
         detail.value = data
         showDetailModal.value = true
       }
-      const handleDelete = async _id => {
+      const handleDelete = async id => {
         try {
-          await $api.leaveSubmit({ _id, action: 'delete' })
+          await $api.leaveSubmit({ id, action: 'delete' })
           $message.success('作废成功')
           getApplyList()
         } catch (error) {

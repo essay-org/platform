@@ -19,7 +19,7 @@
         <el-form-item label="邮箱" prop="userEmail">
           <el-input v-model="userForm.userEmail" placeholder="请输入用户邮箱" :disabled="action === 'edit'">
             <!-- input 框后缀 -->
-            <template #append>@imooc.com</template>
+            <template #append>@qq.com</template>
           </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="mobile">
@@ -38,7 +38,7 @@
         <el-form-item label="系统角色" prop="roleList">
           <!-- multiple 开启下拉框多选，style="width: 100%" 让下拉框撑开到弹框宽度 -->
           <el-select v-model="userForm.roleList" placeholder="请选择用户的系统角色" multiple style="width: 100%">
-            <el-option v-for="role in roleList" :key="role._id" :value="role._id" :label="role.roleName" />
+            <el-option v-for="role in roleList" :key="role.id" :value="role.id" :label="role.roleName" />
           </el-select>
         </el-form-item>
         <el-form-item label="所属部门" prop="deptId">
@@ -49,7 +49,7 @@
             clearable 支持清空选项
           -->
           <el-cascader v-model="userForm.deptId" placeholder="请选择用户所属的部门" :options="deptList" style="width: 100%"
-            :props="{ checkStrictly: true, value: '_id', label: 'deptName' }" clearable />
+            :props="{ checkStrictly: true, value: 'id', label: 'deptName' }" clearable />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -158,7 +158,9 @@ export default {
     const showModal = ref(false) // 弹框显示布尔值
     const userForm = reactive({
       // 用户新增表单对象
-      state: 3 // 状态默认为试用期
+      state: 3, // 状态默认为试用期
+      roleList: [],
+      deptId: []
     })
     const rules = {
       // 定义用户新增表单校验规则
@@ -274,7 +276,7 @@ export default {
         const res = await $api.userDel({
           userIds: [row.userId]
         })
-        if (res.modifiedCount > 0) {
+        if (res > 0) {
           $message.success('删除成功')
           getUserList()
         } else {
@@ -294,7 +296,7 @@ export default {
         const res = await $api.userDel({
           userIds: checkedUserIds
         })
-        if (res.modifiedCount > 0) {
+        if (res > 0) {
           $message.success('删除成功')
           getUserList()
         } else {
@@ -349,7 +351,7 @@ export default {
           // 校验通过
           // 参数不需要响应式，toRaw 转化为普通对象即可
           const params = toRaw(userForm)
-          params.userEmail += '@imooc.com'
+          params.userEmail += '@qq.com'
           params.action = action.value
           try {
             const res = await $api.userSubmit(params)
@@ -379,7 +381,7 @@ export default {
        */
       nextTick(() => {
         Object.assign(userForm, row) // 将 row 中的数据复制到 userForm 中
-        userForm.userEmail = userForm.userEmail.split('@')[0] // 填充文本时删掉 @imooc.com 后缀
+        userForm.userEmail = userForm.userEmail.split('@')[0] // 填充文本时删掉 @qq.com 后缀
       })
     }
 

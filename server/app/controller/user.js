@@ -12,7 +12,10 @@ class UserController extends BaseController {
       // 暂时只支持邮箱
       let result = await user.findOne({ userEmail });
       if (result) return this.fail(`系统检测到有重复用户：${userEmail}`);
-      result = await user.save(this.ctx.request.body);
+      result = await user.save({
+        userPwd,
+        ...this.ctx.request.body,
+      });
       if (!result) { return this.fail('添加失败'); }
       this.success(result);
     } else {
@@ -64,7 +67,7 @@ class UserController extends BaseController {
         const ret = await user.remove(id);
         if (ret) count += 1;
       }
-      this.success('', `共删除${count}条数据`);
+      this.success(count, `共删除${count}条数据`);
     } else {
       this.fail('参数错误');
     }
@@ -72,7 +75,7 @@ class UserController extends BaseController {
   // 在职人员列表
   async allList() {
     const { user } = this.ctx.service;
-    const data = await user.find({ state: 1 });
+    const data = await user.findAll({ state: 1 });
     this.success(data);
   }
 }

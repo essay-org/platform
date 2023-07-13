@@ -26,7 +26,7 @@
         树形结构必须要定义 row-key
         tree-props 定义树形数据中子项的属性名称，这里我们返回的数据已经是 children 了，可以不用写，这里是为了演示
        -->
-      <el-table :data="menuList" row-key="_id" :tree-props="{children: 'children'}">
+      <el-table :data="menuList" row-key="id" :tree-props="{children: 'children'}">
         <el-table-column
           v-for="item in columns" :key="item.prop"
           :prop="item.prop" :label="item.label"
@@ -36,7 +36,7 @@
           <template #default="scope">
             <el-button type="primary" @click="handleAdd(2, scope.row)" size="small" v-has="'menu-create'">新增</el-button>
             <el-button type="success" @click="handleEdit(scope.row)" size="small" v-has="'menu-edit'">编辑</el-button>
-            <el-button type="danger" @click="handleDel(scope.row._id)" size="small" v-has="'menu-delete'">删除</el-button>
+            <el-button type="danger" @click="handleDel(scope.row.id)" size="small" v-has="'menu-delete'">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -47,7 +47,7 @@
           <el-cascader
             v-model="menuForm.parentId" placeholder="请选择父级菜单"
             :options="menuList" clearable
-            :props="{ checkStrictly: true, value: '_id', label: 'menuName' }"
+            :props="{ checkStrictly: true, value: 'id', label: 'menuName' }"
             style="width: 100%"
           />
           <span>不选，则直接创建一级菜单</span>
@@ -149,7 +149,7 @@
         columns,
         showModal: false,
         menuForm: {
-          parentId: [ null ],
+          parentId: [],
           menuType: 1,
           menuState: 1
         },
@@ -207,7 +207,7 @@
         if (type == 2) {
           this.$nextTick(() => {
             // 让菜单渲染后再赋值，有利于表单重置
-            this.menuForm.parentId = [...row.parentId, row._id].filter(item => item)
+            this.menuForm.parentId = [...row.parentId, row.id].filter(item => item)
           })
         }
       },
@@ -221,7 +221,7 @@
           Object.assign(this.menuForm, row)
         })
       },
-      async handleDel (_id) {
+      async handleDel (id) {
         /**
          * 这里不需要判断返回值，也不需要用 try-catch 包裹
          * 因为在我们封装的 request 中，只有接口状态码为 200 才会正常返回数据
@@ -231,7 +231,7 @@
          * 当然你也可以捕获错误然后什么都不做，让代码更加健壮
          */
         try {
-          await this.$api.menuSubmit({ _id, action: 'delete' })
+          await this.$api.menuSubmit({ id, action: 'delete' })
           this.$message.success('删除成功')
           this.getMenuList()
         } catch (err) { /* 封装的 request 中已经提示过错误了 */ }

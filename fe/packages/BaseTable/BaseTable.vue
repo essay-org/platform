@@ -21,7 +21,7 @@
     <el-pagination
       class="pagination" background layout="prev, pager, next"
       :total="pager.total" :page-size="pager.pageSize"
-      @update:current-change="handleCurrentChange"
+      @update:page-size="handleCurrentChange"
     />
   </div>
 </template>

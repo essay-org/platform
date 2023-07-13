@@ -20,10 +20,6 @@ module.exports = function (app) {
       },
       userPwd: {
         type: STRING,
-        validate: {
-          notNull: true,
-          notEmpty: true,
-        },
       },
       userEmail: {
         type: STRING,

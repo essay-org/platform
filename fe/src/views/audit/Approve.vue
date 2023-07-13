@@ -39,7 +39,7 @@
       <el-pagination
         class="pagination" background layout="prev, pager, next"
         :total="pager.total" :page-size="pager.pageSize"
-        @update:current-change="handleCurrentChange"
+        @update:page-size="handleCurrentChange"
       />
     </div>
     <el-dialog title="审核" width="50%" v-model="showDetailModal" destroy-on-close>
@@ -213,7 +213,7 @@
           await $api.leaveApprove({
             action,
             remark: auditForm.remark,
-            _id: detail.value._id
+            id: detail.value.id
           })
           handleClose()
           $message.success('处理成功')

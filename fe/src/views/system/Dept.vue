@@ -16,7 +16,7 @@
         <el-button type="primary" @click="handleOpen" v-has="'dept-create'">创建</el-button>
       </div>
       <!-- stripe 斑马条纹 -->
-      <el-table :data="deptList" row-key="_id" stripe>
+      <el-table :data="deptList" row-key="id" stripe>
         <!-- v-bind 会把 item 中的值绑定到 el-table-column 上，如 label、prop、width、formatter -->
         <el-table-column
           v-for="item in columns" :key="item.prop"
@@ -25,7 +25,7 @@
         <el-table-column label="操作">
           <template #default="scope">
             <el-button type="primary" size="small" @click="handleEdit(scope.row)" v-has="'dept-edit'">编辑</el-button>
-            <el-button size="small" @click="handleDel(scope.row._id)" v-has="'dept-delete'">删除</el-button>
+            <el-button size="small" @click="handleDel(scope.row.id)" v-has="'dept-delete'">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -36,7 +36,7 @@
           <el-cascader
             placeholder="请选择上级部门" clearable
             v-model="deptForm.parentId" :options="deptList"
-            :props="{ checkStrictly: true, value: '_id', label: 'deptName' }"
+            :props="{ checkStrictly: true, value: 'id', label: 'deptName' }"
             style="width: 100%"
           />
         </el-form-item>
@@ -143,9 +143,9 @@
           })
         })
       },
-      async handleDel (_id) {
+      async handleDel (id) {
         try {
-          await this.$api.deptSubmit({ _id, action: 'delete' })
+          await this.$api.deptSubmit({ id, action: 'delete' })
           this.$message.success('部门删除成功')
           this.getDeptList()
         } catch (error) {
