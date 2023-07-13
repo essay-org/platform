@@ -91,10 +91,11 @@ class MenuController extends BaseController {
       // list = JSON.parse(JSON.stringify(list));
       list = list.toObject();
       let permissionList = [];
-      console.log(111111, list);
       list.forEach(role => {
-        const { checkedKeys, halfCheckedKeys } = role.permissionList;
-        permissionList = permissionList.concat([ ...checkedKeys, ...halfCheckedKeys ]);
+        if (role) {
+          const { checkedKeys, halfCheckedKeys } = role.permissionList;
+          permissionList = permissionList.concat([ ...checkedKeys, ...halfCheckedKeys ]);
+        }
       });
       // 获取所有权限后进行去重
       permissionList = [ ...new Set(permissionList) ];

@@ -35,9 +35,9 @@ class RoleService extends Service {
     return await this.ctx.model.Role.find();
   }
   async find(data) {
+    const params = {};
     const { roleName, pageSize, pageNum } = data;
     const { page, skipIndex } = this.ctx.helper.pager({ pageSize, pageNum });
-    const params = {};
     if (data.roleName) params.roleName = roleName;
     const total = await this.ctx.model.Role.find(params).count();
     const result = await this.ctx.model.Role.find(params).limit(page.pageSize)

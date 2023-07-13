@@ -15,7 +15,7 @@
       <div class="action">
         <el-button type="primary" @click="handleAdd" v-has="'role-create'">创建</el-button>
       </div>
-      <el-table :data="roleList">
+      <el-table :data="roleList" v-if="!loading">
         <el-table-column v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label"
           :width="item.width" :formatter="item.formatter" />
         <el-table-column label="操作" width="260">
@@ -109,6 +109,7 @@ export default {
   name: 'Role',
   data() {
     return {
+      loading: false,
       queryForm: {},
       roleList: [],
       columns,
@@ -132,9 +133,11 @@ export default {
       actionMap: {}
     }
   },
-  mounted() {
-    this.getRoleList()
-    this.getMenuList()
+  async mounted() {
+    this.loading = true
+    await this.getRoleList()
+    await this.getMenuList()
+    this.loading = false
   },
   methods: {
     async getRoleList() {
