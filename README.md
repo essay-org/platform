@@ -47,21 +47,21 @@ npm run dev # 访问 http://127.0.0.1:7077
 
 
 <p align="center" dir="auto">
-    <img src="/public/1.png" width="400px">
+    <img src="/public/1.png" width="600px">
 </p>
 
 # 菜单管理
 
 
 <p align="center" dir="auto">
-    <img src="/public/2.png" width="400px">
+    <img src="/public/2.png" width="600px">
 </p>
 
 ### 角色管理
 
 
 <p align="center" dir="auto">
-    <img src="/public/4.png" width="400px">
+    <img src="/public/4.png" width="600px">
 </p>
 
 ### 部门管理
@@ -73,4 +73,6 @@ npm run dev # 访问 http://127.0.0.1:7077
 
 # 其他说明
 
-本项目是一个以学习为目的的后台项目，旨在让前端也能充分了解RBAC模型是如何设计的。如果在学习过程遇到任何问题，可以在issue中提出，我尽可能回复。
+本项目是一个以学习为目的的后台项目，旨在让前端也能充分了解RBAC模型是如何设计的，不建议用于线上，因为未经过充分的测试。
+
+如果在学习过程遇到任何问题，可以在issue中提出，我尽可能回复。
