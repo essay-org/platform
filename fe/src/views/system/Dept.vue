@@ -81,15 +81,15 @@
           prop: 'userName'
         }, {
           label: '创建时间',
-          prop: 'createTime',
+          prop: 'createdAt',
           formatter (row, column, value) {
-            return util.formateDate(new Date(value))
+            return util.formateDate(value)
           }
         }, {
           label: '更新时间',
-          prop: 'updateTime',
+          prop: 'updatedAt',
           formatter (row, column, value) {
-            return util.formateDate(new Date(value))
+            return util.formateDate(value)
           }
         }],
         deptList: [],

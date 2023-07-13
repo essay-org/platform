@@ -8,7 +8,7 @@
 <script>
   export default {
     methods: {
-      name: '404',
+      name: 'not',
       goHome () {
         this.$router.push('/')
       }

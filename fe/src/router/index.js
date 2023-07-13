@@ -19,36 +19,7 @@ const routes = [{
       title: '欢迎页'
     },
     component: () => import('@/views/Welcome.vue')  // 按需加载
-  }, 
-  /* {
-    name: 'user',
-    path: '/system/user',
-    meta: {
-      title: '用户管理'
-    },
-    component: () => import('@/views/User.vue')
-  }, {
-    name: 'menu',
-    path: '/system/menu',
-    meta: {
-      title: '菜单管理'
-    },
-    component: () => import('@/views/Menu.vue')
-  }, {
-    name: 'role',
-    path: '/system/role',
-    meta: {
-      title: '角色管理'
-    },
-    component: () => import('@/views/Role.vue')
-  }, {
-    name: 'dept',
-    path: '/system/dept',
-    meta: {
-      title: '部门管理'
-    },
-    component: () => import('@/views/Dept.vue')
-  } */]
+  }]
 }, {
   name: 'login',
   path: '/login',
@@ -57,7 +28,7 @@ const routes = [{
   },
   component: () => import('@/views/Login.vue')  // 按需加载
 }, {
-  name: '404',
+  name: 'not',
   path: '/404',
   meta: {
     title: '页面不存在'
@@ -74,6 +45,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (checkPermission(to.path)) {
     document.title = to.meta.title
+    // debugger
     next()  // 页面存在，next 进入
   } else {  // 要访问的页面不存在，没有在 routes 中定义过
     next('/404')  // 跳转到 404 页面
@@ -82,6 +54,7 @@ router.beforeEach((to, from, next) => {
 
 // 判断当前地址是否可以访问
 function checkPermission (path) {
+  console.log(router.getRoutes())
   return router.getRoutes().some(route => route.path === path)
 }
 
@@ -93,7 +66,7 @@ async function loadAsyncRoutes () {
       const routes = util.generateRoute(menuList)
       routes.map(route => {
         // 这里不能用 @，且要用变量形式放入 import 中，否则加载不出来
-        const url = `@/views/${route.component}.vue`
+        const url = `../views/${route.component}.vue`
         route.component = () => import(/* @vite-ignore */ url)
         router.addRoute('home', route)
       })

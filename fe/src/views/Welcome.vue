@@ -1,10 +1,9 @@
 <template>
   <div class="welcome">
     <div class="content">
-      <div class="title">通用后台管理系统</div>
-      <div class="desc">- Vue3.0 + ElementPlus + Egg + SQLite 打造通用后台管理系统</div>
+      <div class="title">管理后台系统</div>
+      <div class="desc">Vue3.0 + ElementPlus + Egg + SQLite 打造通用后台管理系统</div>
     </div>
-    <div class="img"></div>
   </div>
 </template>
 

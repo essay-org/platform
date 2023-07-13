@@ -3,36 +3,6 @@
     <div class="query-form">
       <QueryForm :form="form" v-model="user" @handleQuery="handleQuery" />
     </div>
-    <!-- <div class="base-table">
-      注释：base-table 和 action 在 @/assets/style/index.less 中设置了部分样式，主要是一些间距和边框
-      <div class="action">
-        <el-button type="primary" @click="handleCreate" v-has="'user-create'">新增</el-button>
-        <el-button type="danger" @click="handlePatchDel" v-has="'user-patch-delete'">批量删除</el-button>
-      </div>
-      注释：selection-change 在选中多选框时触发
-      <el-table :data="userList" @selection-change="handleSelectionChange">
-        注释：type="selection" 是复选框
-        <el-table-column type="selection" width="55"></el-table-column>
-        注释：prop 对应传入 el-table 的 data 数据中的属性；formatter 用于格式化显示的数据
-        <el-table-column
-          v-for="item in columns" :key="item.prop"
-          :prop="item.prop" :label="item.label" :width="item.width" :formatter="item.formatter"
-        ></el-table-column>
-        <el-table-column label="操作" width="150">
-          注释：插槽的作用域 scope 中存放着当前行的数据
-          <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.row)" v-has="'user-edit'">编辑</el-button>
-            <el-button type="danger" size="small" @click="handleDel(scope.row)" v-has="'user-delete'">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      注释：background 为页码加上色块，layout 配置布局；total 总条数，page-size 每页条数
-      <el-pagination
-        class="pagination" background layout="prev, pager, next"
-        :total="pager.total" :page-size="pager.pageSize"
-        @current-change="handleCurrentChange"
-      />
-    </div> -->
     <BaseTable :columns="columns" :data="userList" selection :pager="pager" @selection-change="handleSelectionChange"
       @handleAction="handleAction" @handleCurrentChange="handleCurrentChange">
       <template #action>
@@ -149,7 +119,7 @@ export default {
       },
       {
         label: '注册时间',
-        prop: 'createTime',
+        prop: 'createdAt',
         width: 180,
         formatter: (row, column, value) => {
           return util.formateDate(new Date(value))

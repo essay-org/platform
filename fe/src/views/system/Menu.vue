@@ -131,10 +131,10 @@
     }
   }, {
     label: '创建时间',
-    prop: 'createTime',
+    prop: 'createdAt',
     width: 150,
     formatter (row, column, value) {
-      return util.formateDate(new Date(value))
+      return util.formateDate(value)
     }
   }]
 

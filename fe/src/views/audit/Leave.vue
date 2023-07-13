@@ -1,5 +1,5 @@
 <template>
-  <div class="approve-manager">
+  <div class="leave-manager">
     <div class="query-form">
       <el-form ref="form" :inline="true" :model="queryForm">
         <el-form-item label="审批状态" prop="applyState">
@@ -20,6 +20,7 @@
     </div>
     <div class="base-table">
       <div class="action">
+        <el-button type="primary" @click="handleApply">申请休假</el-button>
       </div>
       <el-table :data="applyList">
         <el-table-column
@@ -28,25 +29,66 @@
         ></el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <!-- 只有当前审核人是自己且审核状态是待审核和审核中才显示审核按钮 -->
-            <el-button
-              v-if="scope.row.curAuditUserName === userInfo.userName && [1, 2].includes(scope.row.applyState)"
-              size="small" @click="handleDetail(scope.row)"
-            >审核</el-button>
+            <el-button size="small" @click="handleDetail(scope.row)">查看</el-button>
+            <el-button v-if="scope.row.applyState <= 2" type="danger" size="small" @click="handleDelete(scope.row._id)">作废</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
         class="pagination" background layout="prev, pager, next"
         :total="pager.total" :page-size="pager.pageSize"
-        @current-change="handleCurrentChange"
+        @update:current-change="handleCurrentChange"
       />
     </div>
-    <el-dialog title="审核" width="50%" v-model="showDetailModal" destroy-on-close>
-      <el-form ref="dialogForm" :model="auditForm" label-width="120px" label-suffix=":">
-        <el-form-item label="申请人">
-          <div>{{ detail.applyUser.userName }}</div>
+    <el-dialog title="申请休假" v-model="showModal" width="70%">
+      <el-form ref="dialogForm" :model="leaveForm" label-width="120px" :rules="rules">
+        <el-form-item label="休假类型" prop="applyType" required>
+          <el-select v-model="leaveForm.applyType">
+            <el-option label="事假" :value="1"></el-option>
+            <el-option label="调休" :value="2"></el-option>
+            <el-option label="年假" :value="3"></el-option>
+          </el-select>
         </el-form-item>
+        <el-form-item label="休假日期" required>
+          <el-row>
+            <el-col :span="11">
+              <el-form-item prop="startTime">
+                <el-date-picker
+                  v-model="leaveForm.startTime" type="date" placeholder="选择开始日期"
+                  @change="handleDateChange('startTime')"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="2" style="text-align: center;">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="endTime">
+                <el-date-picker
+                  v-model="leaveForm.endTime" type="date" placeholder="选择结束日期"
+                  @change="handleDateChange('endTime')"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        <el-form-item label="休假时长" prop="leaveTime">{{ leaveForm.leaveTime }}</el-form-item>
+        <el-form-item label="休假原因" prop="reasons">
+          <el-input type="textarea" :row="3" placeholder="请输入休假原因" v-model="leaveForm.reasons" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="handleClose">取 消</el-button>
+          <el-button type="primary" @click="handleSubmit">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <el-dialog title="申请休假详情" width="50%" v-model="showDetailModal" destroy-on-close>
+      <el-steps :active="detail.applyState > 2 ? 3 : detail.applyState" align-center>
+        <el-step title="待审批"></el-step>
+        <el-step title="审批中"></el-step>
+        <el-step title="审批通过/审批拒绝"></el-step>
+      </el-steps>
+      <el-form label-width="120px" label-suffix=":">
         <el-form-item label="休假类型">
           <div>{{ detail.applyTypeName }}</div>
         </el-form-item>
@@ -65,16 +107,7 @@
         <el-form-item label="审批人">
           <div>{{ detail.curAuditUserName }}</div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input type="textarea" :rows="3" placeholder="请输入审核备注" v-model="auditForm.remark" />
-        </el-form-item>
       </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="handleApprove('pass')" type="primary">审核通过</el-button>
-          <el-button @click="handleApprove('refuse')" type="danger">驳回</el-button>
-        </span>
-      </template>
     </el-dialog>
   </div>
 </template>
@@ -84,22 +117,16 @@
   import util from '@/utils/util'
 
   export default {
-    name: 'Approve',
+    name: 'Leave',
     setup () {
       const { ctx, appContext } = getCurrentInstance()
-      const { $api, $message, $store } = appContext.config.globalProperties
+      const { $api, $message } = appContext.config.globalProperties
       const queryForm = reactive({
-        applyState: 1
+        applyState: ''
       })
       const columns = [{
         label: '单号',
         prop: 'orderNo'
-      }, {
-        label: '申请人',
-        prop: '',
-        formatter (row) {
-          return row.applyUser.userName
-        }
       }, {
         label: '休假时间',
         prop: '',
@@ -153,6 +180,20 @@
         pageSize: 10,
         total: 0
       })
+      const rules = {
+        startTime: [{ required: true, type: 'date', message: '请输入开始日期', trigger: 'change' }],
+        endTime: [{ required: true, type: 'date', message: '请输入结束日期', trigger: 'change' }],
+        reasons: [{ required: true, message: '请输入休假原因', trigger: ['blur', 'change'] }],
+      }
+      const showModal = ref(false)
+      const leaveForm = reactive({
+        applyType: 1,
+        startTime: '',
+        endTime: '',
+        leaveTime: '0天',
+        reasons: ''
+      })
+      const action = ref('add')
 
       onMounted(() => {
         getApplyList()
@@ -160,7 +201,7 @@
 
       // 加载申请列表
       const getApplyList = async () => {
-        const params = { ...queryForm, ...pager, type: 'approve' }
+        const params = { ...queryForm, ...pager }
         const { list, page } = await $api.getApplyList(params)
         applyList.value = list
         pager.total = page.total
@@ -177,18 +218,48 @@
         this.getLeaveList()
       }
 
-      const userInfo = $store.state.userInfo
+      const handleApply = () => {
+        showModal.value = true
+        action.value = 'add'
+      }
+
+      const handleClose = () => {
+        showModal.value = false
+        handleReset('dialogForm')
+      }
+
+      const handleSubmit = () => {
+        ctx.$refs.dialogForm.validate(async valid => {
+          if (valid) {
+            try {
+              const params = { ...leaveForm, action: action.value }
+              await $api.leaveSubmit(params)
+              $message.success('操作成功')
+              handleClose('dialogForm')
+              getApplyList()
+            } catch (error) {
+              $message.error('操作失败')
+            }
+          }
+        })
+      }
+
+      const handleDateChange = (key) => {
+        const { startTime, endTime } = leaveForm
+        if (!startTime || !endTime) return  // 只要一个字段为空就不做处理
+        if (startTime > endTime) {
+          $message.error('开始日期不能晚于结束日期')
+          leaveForm.leaveTime = '0天'
+          setTimeout(() => {
+            leaveForm[key] = ''
+          })
+        } else {
+          leaveForm.leaveTime = `${(endTime - startTime) / (24 * 60 * 60 * 1000) + 1}天`
+        }
+      }
 
       const showDetailModal = ref(false)
       const detail = ref({})
-      const auditForm = reactive({
-        remark: ''
-      })
-
-      const handleClose = () => {
-        showDetailModal.value = false
-        handleReset('dialogForm')
-      }
 
       const handleDetail = row => {
         const data = { ...row }
@@ -208,19 +279,13 @@
         detail.value = data
         showDetailModal.value = true
       }
-      const handleApprove = async action => {
+      const handleDelete = async _id => {
         try {
-          await $api.leaveApprove({
-            action,
-            remark: auditForm.remark,
-            _id: detail.value._id
-          })
-          handleClose()
-          $message.success('处理成功')
+          await $api.leaveSubmit({ _id, action: 'delete' })
+          $message.success('作废成功')
           getApplyList()
-          $store.commit('saveNoticeCount', $store.state.noticeCount - 1)
         } catch (error) {
-          $message.error(`处理失败：${error.stack}`)
+          $message.error(`作废失败：${error.stack}`)
         }
       }
 
@@ -232,19 +297,24 @@
         handleReset,
         handleCurrentChange,
         getApplyList,
-        userInfo,
+        rules,
+        showModal,
+        leaveForm,
+        handleApply,
+        handleClose,
+        handleSubmit,
+        handleDateChange,
         showDetailModal,
         detail,
-        auditForm,
         handleDetail,
-        handleApprove
+        handleDelete
       }
     }
   }
 </script>
 
 <style lang="less">
-  .approve-manager {
+  .leave-manager {
     .base-table {
       .pagination {
         padding: 20px 10px;

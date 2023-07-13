@@ -28,7 +28,7 @@
         </el-table-column>
       </el-table>
       <el-pagination class="pagination" background layout="prev, pager, next" :total="pager.total"
-        :page-size="pager.pageSize" @current-change="handleCurrentChange" />
+        :page-size="pager.pageSize" @update:current-change="handleCurrentChange" />
     </div>
     <!-- 角色操作弹框 -->
     <el-dialog title="角色新增" v-model="showModal">
@@ -92,15 +92,15 @@ const columns = [{
   }
 }, {
   label: '创建时间',
-  prop: 'createTime',
+  prop: 'createdAt',
   formatter(row, column, value) {
-    return util.formateDate(new Date(value))
+    return util.formateDate(value)
   }
 }, {
   label: '更新时间',
-  prop: 'updateTime',
+  prop: 'updatedAt',
   formatter(row, column, value) {
-    return util.formateDate(new Date(value))
+    return util.formateDate(value)
   }
 }]
 const actionMap = {}
